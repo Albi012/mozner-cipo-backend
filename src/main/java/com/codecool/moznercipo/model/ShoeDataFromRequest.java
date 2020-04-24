@@ -5,25 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@Entity
-public class Shoe {
 
-    @Id
-    @GeneratedValue
-    Long id;
+public class ShoeDataFromRequest {
     String brand;
     String name;
     String price;
     String size;
-    String url;
     int quantitiy;
-
+    String url;
 }

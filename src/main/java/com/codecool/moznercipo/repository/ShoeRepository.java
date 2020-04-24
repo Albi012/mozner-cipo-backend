@@ -2,6 +2,8 @@ package com.codecool.moznercipo.repository;
 
 import com.codecool.moznercipo.model.Shoe;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,4 +12,9 @@ import java.util.List;
 public interface ShoeRepository extends JpaRepository<Shoe,Long> {
 
     List<Shoe> getShoesByBrand(String brand);
+
+    Shoe getShoeById(Long id);
+
+    Shoe getShoeByBrandAndNameAndSize(String brand,String name,String size);
+
 }

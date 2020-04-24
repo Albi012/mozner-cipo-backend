@@ -25,7 +25,7 @@ public class MoznerCipoApplication {
                     .name("Fekete")
                     .brand("Bugatti")
                     .price("10 000 HUF")
-                    .quantitiy("2")
+                    .quantitiy(2)
                     .build();
             shoeRepository.save(shoe1);
         };
