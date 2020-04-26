@@ -15,6 +15,5 @@ public class ShoeDataFromRequest {
     String name;
     String price;
     String size;
-    int quantitiy;
     String url;
 }
