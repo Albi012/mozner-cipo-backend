@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ShoeDataManager {
@@ -18,46 +19,51 @@ public class ShoeDataManager {
         return shoeRepository.findAll();
     }
 
-    public List<Shoe> getShoesByBrand(String brand){return shoeRepository.getShoesByBrand(brand);}
+    public List<Shoe> getShoesByBrand(String brand) {
+        return shoeRepository.getShoesByBrand(brand);
+    }
 
-    private boolean checkIfShoeExist(ShoeDataFromRequest shoeDataFromRequest){
-        Shoe shoe = shoeRepository.getShoeByBrandAndNameAndSize(
-                shoeDataFromRequest.getBrand(),
-                shoeDataFromRequest.getName(),
-                shoeDataFromRequest.getSize());
+    private boolean checkIfShoeExist(ShoeDataFromRequest shoeDataFromRequest) {
+        Shoe shoe = shoeRepository.getShoeByShoeNumberAndBrand(
+                shoeDataFromRequest.getShoeNumber(), shoeDataFromRequest.getBrand());
         return shoe != null;
     }
 
+
     public Shoe saveNewShoe(ShoeDataFromRequest shoeDataFromRequest) {
-        if(checkIfShoeExist(shoeDataFromRequest)){
-            Shoe existingShoe = shoeRepository.getShoeByBrandAndNameAndSize(
-                    shoeDataFromRequest.getBrand(),
-                    shoeDataFromRequest.getName(),
-                    shoeDataFromRequest.getSize());
-            increaseQuantity(existingShoe.getId());
+        if (checkIfShoeExist(shoeDataFromRequest)) {
+            Shoe existingShoe = shoeRepository.getShoeByShoeNumberAndBrand(
+                    shoeDataFromRequest.getShoeNumber(), shoeDataFromRequest.getBrand());
+            if (existingShoe.getSize().containsKey(shoeDataFromRequest.getSize())) {
+                increaseQuantity(existingShoe.getId(), shoeDataFromRequest.getSize());
+            }
             return existingShoe;
         }
         Shoe newShoe = Shoe.builder()
                 .brand(shoeDataFromRequest.getBrand())
-                .name(shoeDataFromRequest.getName())
+                .category(shoeDataFromRequest.getCategory())
                 .price(shoeDataFromRequest.getPrice())
-                .size(shoeDataFromRequest.getSize())
+                .size(Map.of(shoeDataFromRequest.getSize(), 1))
                 .url(shoeDataFromRequest.getUrl())
-                .quantitiy(1)
+                .onSale(shoeDataFromRequest.getOnSale())
                 .build();
         return shoeRepository.save(newShoe);
     }
 
-    public void increaseQuantity(Long id){
+
+    public void increaseQuantity(Long id, String size) {
         Shoe shoe = shoeRepository.getOne(id);
-        shoe.setQuantitiy(shoe.getQuantitiy()+1);
+        shoe.getSize().put(size, shoe.getSize().get(size) + 1);
         shoeRepository.save(shoe);
     }
 
-    public void decreaseQuantity(Long id){
+    public void decreaseQuantity(Long id, String size) {
         Shoe shoe = shoeRepository.getOne(id);
-        shoe.setQuantitiy(shoe.getQuantitiy()-1);
+        shoe.getSize().put(size, shoe.getSize().get(size) - 1);
         shoeRepository.save(shoe);
     }
 
+    public void deleteShoe(Long id) {
+        shoeRepository.deleteById(id);
+    }
 }

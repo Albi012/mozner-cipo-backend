@@ -29,5 +29,19 @@ public class RouteController {
         return shoeDataManager.saveNewShoe(shoeDataFromRequest);
     };
 
+    @GetMapping("/shoe/delete/{id}")
+    public void deleteShoe(@PathVariable("id") Long id){
+        shoeDataManager.deleteShoe(id);
+    };
+
+    @GetMapping("/shoe/increase/{id}/{size}")
+    public void increaseShoeQuantity(@PathVariable("id") Long id,@PathVariable("size") String size){
+        shoeDataManager.increaseQuantity(id,size);
+    };
+
+    @GetMapping("/shoe/decrease/{id}/{size}")
+    public void decreaseShoeQuantity(@PathVariable("id") Long id,@PathVariable("size") String size){
+        shoeDataManager.decreaseQuantity(id,size);
+    };
 
 }

@@ -9,7 +9,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -17,19 +16,12 @@ import java.util.Map;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Shoe {
-
+public class OtherItem {
     @Id
     @GeneratedValue
     Long id;
-    String brand;
+    String name;
     String category;
-    String shoeNumber;
     String price;
-    Boolean onSale;
-    @ElementCollection
-    Map<String,Integer> size;
     String url;
-
-
 }

@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Map;
+
 @SpringBootApplication
 public class MoznerCipoApplication {
 
@@ -19,15 +21,16 @@ public class MoznerCipoApplication {
     }
 
     @Bean
-    public CommandLineRunner init(){
+    public CommandLineRunner init() {
         return args -> {
-            Shoe shoe1 = Shoe.builder()
-                    .name("Fekete")
+            Shoe shoe = Shoe.builder()
+                    .price("10000")
                     .brand("Bugatti")
-                    .price("10 000 HUF")
-                    .quantitiy(2)
+                    .size(Map.of("32", 1))
+                    .url("213")
+                    .category("men")
                     .build();
-            shoeRepository.save(shoe1);
+            shoeRepository.save(shoe);
         };
     }
 }
