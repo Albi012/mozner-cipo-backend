@@ -26,7 +26,7 @@ public class Shoe {
     String category;
     String shoeNumber;
     String price;
-    Boolean onSale;
+    //boolean onSale;
     @ElementCollection
     Map<String,Integer> size;
     String url;

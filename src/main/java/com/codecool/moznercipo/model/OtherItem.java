@@ -22,6 +22,7 @@ public class OtherItem {
     Long id;
     String name;
     String category;
+    //boolean onSale;
     String price;
     String url;
 }

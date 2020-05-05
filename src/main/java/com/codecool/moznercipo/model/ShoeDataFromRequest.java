@@ -16,6 +16,6 @@ public class ShoeDataFromRequest {
     String category;
     String price;
     String size;
-    Boolean onSale;
+    //Boolean onSale;
     String url;
 }

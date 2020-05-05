@@ -11,4 +11,7 @@ public interface OtherItemRepository extends JpaRepository<OtherItem,Long> {
 
     List<OtherItem> getOtherItemsByCategory(String category);
 
+    //List<OtherItem> getOtherItemsByOnSaleIsTrue();
+
+
 }

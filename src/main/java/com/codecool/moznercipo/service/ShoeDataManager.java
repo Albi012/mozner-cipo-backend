@@ -37,19 +37,28 @@ public class ShoeDataManager {
             if (existingShoe.getSize().containsKey(shoeDataFromRequest.getSize())) {
                 increaseQuantity(existingShoe.getId(), shoeDataFromRequest.getSize());
             }
+            else{
+                addSize(existingShoe.getId(),shoeDataFromRequest.getSize());
+            }
             return existingShoe;
         }
         Shoe newShoe = Shoe.builder()
                 .brand(shoeDataFromRequest.getBrand())
+                .shoeNumber(shoeDataFromRequest.getShoeNumber())
                 .category(shoeDataFromRequest.getCategory())
                 .price(shoeDataFromRequest.getPrice())
                 .size(Map.of(shoeDataFromRequest.getSize(), 1))
                 .url(shoeDataFromRequest.getUrl())
-                .onSale(shoeDataFromRequest.getOnSale())
+                //.onSale(shoeDataFromRequest.getOnSale())
                 .build();
         return shoeRepository.save(newShoe);
     }
 
+    void addSize(Long id,String size){
+        Shoe shoe = shoeRepository.getOne(id);
+        shoe.getSize().put(size,1);
+        shoeRepository.save(shoe);
+    }
 
     public void increaseQuantity(Long id, String size) {
         Shoe shoe = shoeRepository.getOne(id);
@@ -65,5 +74,13 @@ public class ShoeDataManager {
 
     public void deleteShoe(Long id) {
         shoeRepository.deleteById(id);
+    }
+
+    public List<Shoe> getShoesByBrandAndCategory(String brand, String category) {
+        return shoeRepository.getShoesByBrandAndCategory(brand,category);
+    }
+
+    public List<String> getBrandsByCategory(String category) {
+        return shoeRepository.getBrandsByCategory(category);
     }
 }
