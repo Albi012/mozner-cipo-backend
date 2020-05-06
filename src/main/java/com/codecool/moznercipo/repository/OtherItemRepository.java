@@ -11,6 +11,8 @@ public interface OtherItemRepository extends JpaRepository<OtherItem,Long> {
 
     List<OtherItem> getOtherItemsByCategory(String category);
 
+    void deleteByName(String name);
+
     //List<OtherItem> getOtherItemsByOnSaleIsTrue();
 
 

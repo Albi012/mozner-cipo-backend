@@ -5,6 +5,7 @@ import com.codecool.moznercipo.model.OtherItem;
 import com.codecool.moznercipo.repository.OtherItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,5 +36,9 @@ public class OtherItemDataManager {
                 .url(itemDataFromRequest.getUrl())
                 .build();
         return otherItemRepository.saveAndFlush(item);
+    }
+    @Transactional
+    public void deleteItemByName(String name) {
+        otherItemRepository.deleteByName(name);
     }
 }

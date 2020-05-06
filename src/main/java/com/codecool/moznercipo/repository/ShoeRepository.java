@@ -13,7 +13,9 @@ public interface ShoeRepository extends JpaRepository<Shoe,Long> {
 
     List<Shoe> getShoesByBrand(String brand);
 
-    Shoe getShoeById(Long id);
+    void deleteByBrandAndShoeNumber(String brand,String shoeNumber);
+
+    Shoe getShoesByBrandAndShoeNumber(String brand,String shoeNumber);
 
     Shoe getShoeByShoeNumberAndBrand(String shoeNumber,String brand);
 

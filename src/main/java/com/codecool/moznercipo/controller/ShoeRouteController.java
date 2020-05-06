@@ -4,6 +4,7 @@ import com.codecool.moznercipo.model.Shoe;
 import com.codecool.moznercipo.model.ShoeDataFromRequest;
 import com.codecool.moznercipo.service.ShoeDataManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,19 +39,19 @@ public class ShoeRouteController {
         return shoeDataManager.saveNewShoe(shoeDataFromRequest);
     };
 
-    @GetMapping("/shoe/delete/{id}")
-    public void deleteShoe(@PathVariable("id") Long id){
-        shoeDataManager.deleteShoe(id);
+    @GetMapping("/shoe/delete/{brand}/{shoeNumber}")
+    public void deleteShoe(@PathVariable("brand") String brand,@PathVariable("shoeNumber") String shoeNumber){
+        shoeDataManager.deleteShoe(brand,shoeNumber);
     };
 
-    @GetMapping("/shoe/increase/{id}/{size}")
-    public void increaseShoeQuantity(@PathVariable("id") Long id,@PathVariable("size") String size){
-        shoeDataManager.increaseQuantity(id,size);
+    @GetMapping("/shoe/increase/{brand}/{shoeNumber}/{size}")
+    public void increaseShoeQuantity(@PathVariable("brand") String brand,@PathVariable("shoeNumber") String shoeNumber,@PathVariable("size") String size){
+        shoeDataManager.increaseQuantity(brand,shoeNumber,size);
     };
 
-    @GetMapping("/shoe/decrease/{id}/{size}")
-    public void decreaseShoeQuantity(@PathVariable("id") Long id,@PathVariable("size") String size){
-        shoeDataManager.decreaseQuantity(id,size);
+    @GetMapping("/shoe/decrease/brand}/{shoeNumber}/{size}")
+    public void decreaseShoeQuantity(@PathVariable("brand") String brand,@PathVariable("shoeNumber") String shoeNumber,@PathVariable("size") String size){
+        shoeDataManager.decreaseQuantity(brand,shoeNumber,size);
     };
 
 }

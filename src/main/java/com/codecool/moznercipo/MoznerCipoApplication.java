@@ -23,6 +23,13 @@ public class MoznerCipoApplication {
     @Bean
     public CommandLineRunner init() {
         return args -> {
+            Shoe shoe1 = Shoe.builder()
+                    .brand("Armani")
+                    .shoeNumber("12-123-532")
+                    .category("men")
+                    .size(Map.of("32", 1, "34", 2))
+                    .build();
+            shoeRepository.save(shoe1);
         };
     }
 }

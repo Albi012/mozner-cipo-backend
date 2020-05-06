@@ -5,9 +5,11 @@ import com.codecool.moznercipo.model.ShoeDataFromRequest;
 import com.codecool.moznercipo.repository.ShoeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Service
 public class ShoeDataManager {
@@ -20,7 +22,7 @@ public class ShoeDataManager {
     }
 
     public List<Shoe> getShoesByBrand(String brand) {
-        return shoeRepository.getShoesByBrand(brand);
+       return shoeRepository.getShoesByBrand(brand);
     }
 
     private boolean checkIfShoeExist(ShoeDataFromRequest shoeDataFromRequest) {
@@ -35,10 +37,9 @@ public class ShoeDataManager {
             Shoe existingShoe = shoeRepository.getShoeByShoeNumberAndBrand(
                     shoeDataFromRequest.getShoeNumber(), shoeDataFromRequest.getBrand());
             if (existingShoe.getSize().containsKey(shoeDataFromRequest.getSize())) {
-                increaseQuantity(existingShoe.getId(), shoeDataFromRequest.getSize());
-            }
-            else{
-                addSize(existingShoe.getId(),shoeDataFromRequest.getSize());
+                increaseQuantityById(existingShoe.getId(), shoeDataFromRequest.getSize());
+            } else {
+                addSize(existingShoe.getId(), shoeDataFromRequest.getSize());
             }
             return existingShoe;
         }
@@ -54,30 +55,45 @@ public class ShoeDataManager {
         return shoeRepository.save(newShoe);
     }
 
-    void addSize(Long id,String size){
+    void addSize(Long id, String size) {
         Shoe shoe = shoeRepository.getOne(id);
-        shoe.getSize().put(size,1);
+        shoe.getSize().put(size, 1);
         shoeRepository.save(shoe);
     }
 
-    public void increaseQuantity(Long id, String size) {
-        Shoe shoe = shoeRepository.getOne(id);
-        shoe.getSize().put(size, shoe.getSize().get(size) + 1);
+    public void increaseQuantity(String brand,String shoeNumber, String size) {
+        Shoe shoe = shoeRepository.getShoeByShoeNumberAndBrand(brand,shoeNumber);
+        if(shoe.getSize().containsKey(size)) {
+            shoe.getSize().put(size, shoe.getSize().get(size) + 1);
+        }
+        else {
+            shoe.getSize().put(size,1);
+        }
         shoeRepository.save(shoe);
     }
 
-    public void decreaseQuantity(Long id, String size) {
+    public void decreaseQuantity(String brand,String shoeNumber, String size) {
+        Shoe shoe = shoeRepository.getShoeByShoeNumberAndBrand(brand,shoeNumber);
+        shoe.getSize().put(size, shoe.getSize().get(size) - 1);
+        if(shoe.getSize().get(size) == 0){
+            shoe.getSize().remove(size);
+        }
+        shoeRepository.save(shoe);
+    }
+
+    @Transactional
+    public void deleteShoe(String brand,String shoeNumber) {
+        shoeRepository.deleteByBrandAndShoeNumber(brand,shoeNumber);
+    }
+
+    void increaseQuantityById(Long id,String size){
         Shoe shoe = shoeRepository.getOne(id);
         shoe.getSize().put(size, shoe.getSize().get(size) - 1);
         shoeRepository.save(shoe);
     }
 
-    public void deleteShoe(Long id) {
-        shoeRepository.deleteById(id);
-    }
-
     public List<Shoe> getShoesByBrandAndCategory(String brand, String category) {
-        return shoeRepository.getShoesByBrandAndCategory(brand,category);
+        return shoeRepository.getShoesByBrandAndCategory(brand, category);
     }
 
     public List<String> getBrandsByCategory(String category) {
