@@ -8,9 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
-import java.util.Map;
-
 @SpringBootApplication
 public class MoznerCipoApplication {
 
@@ -28,7 +25,6 @@ public class MoznerCipoApplication {
                     .brand("Armani")
                     .shoeNumber("12-123-532")
                     .category("men")
-                    .size(List.of("2","3"))
                     .onSale(true)
                     .build();
             shoeRepository.save(shoe1);
@@ -36,7 +32,6 @@ public class MoznerCipoApplication {
                     .brand("aaArmani")
                     .shoeNumber("12-123-532")
                     .category("men")
-                    .size(List.of("2","3"))
                     .onSale(false)
                     .build();
             shoeRepository.save(shoe2);

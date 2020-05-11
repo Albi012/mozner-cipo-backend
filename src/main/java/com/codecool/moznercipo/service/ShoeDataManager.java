@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,12 +39,14 @@ public class ShoeDataManager {
             }
             return existingShoe;
         }
+        List<String> size = new ArrayList<>();
+        size.add(shoeDataFromRequest.getSize());
         Shoe newShoe = Shoe.builder()
                 .brand(shoeDataFromRequest.getBrand())
                 .shoeNumber(shoeDataFromRequest.getShoeNumber())
                 .category(shoeDataFromRequest.getCategory())
                 .price(shoeDataFromRequest.getPrice())
-                .size(List.<String>of(shoeDataFromRequest.getSize()))
+                .size(size)
                 .url(shoeDataFromRequest.getUrl())
                 .onSale(shoeDataFromRequest.isOnSale())
                 .build();
