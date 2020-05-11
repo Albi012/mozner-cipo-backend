@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 
 public class ShoeDataFromRequest {
     String brand;
-    String name;
+    String shoeNumber;
+    String category;
     String price;
     String size;
-    int quantitiy;
+    boolean onSale;
     String url;
 }

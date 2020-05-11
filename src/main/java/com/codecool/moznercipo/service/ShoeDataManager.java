@@ -5,8 +5,11 @@ import com.codecool.moznercipo.model.ShoeDataFromRequest;
 import com.codecool.moznercipo.repository.ShoeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ShoeDataManager {
@@ -18,46 +21,73 @@ public class ShoeDataManager {
         return shoeRepository.findAll();
     }
 
-    public List<Shoe> getShoesByBrand(String brand){return shoeRepository.getShoesByBrand(brand);}
+    public List<Shoe> getShoesByBrand(String brand) {
+        return shoeRepository.getShoesByBrand(brand);
+    }
 
-    private boolean checkIfShoeExist(ShoeDataFromRequest shoeDataFromRequest){
-        Shoe shoe = shoeRepository.getShoeByBrandAndNameAndSize(
-                shoeDataFromRequest.getBrand(),
-                shoeDataFromRequest.getName(),
-                shoeDataFromRequest.getSize());
+    private boolean checkIfShoeExist(ShoeDataFromRequest shoeDataFromRequest) {
+        Shoe shoe = shoeRepository.getShoeByShoeNumberAndBrand(
+                shoeDataFromRequest.getShoeNumber(), shoeDataFromRequest.getBrand());
         return shoe != null;
     }
 
+
     public Shoe saveNewShoe(ShoeDataFromRequest shoeDataFromRequest) {
-        if(checkIfShoeExist(shoeDataFromRequest)){
-            Shoe existingShoe = shoeRepository.getShoeByBrandAndNameAndSize(
-                    shoeDataFromRequest.getBrand(),
-                    shoeDataFromRequest.getName(),
-                    shoeDataFromRequest.getSize());
-            increaseQuantity(existingShoe.getId());
+        if (checkIfShoeExist(shoeDataFromRequest)) {
+            Shoe existingShoe = shoeRepository.getShoeByShoeNumberAndBrand(shoeDataFromRequest.getShoeNumber(), shoeDataFromRequest.getBrand());
+            if (!existingShoe.getSize().contains(shoeDataFromRequest.getSize())) {
+                addShoeSizeById(existingShoe.getId(), shoeDataFromRequest.getSize());
+            }
             return existingShoe;
         }
         Shoe newShoe = Shoe.builder()
                 .brand(shoeDataFromRequest.getBrand())
-                .name(shoeDataFromRequest.getName())
+                .shoeNumber(shoeDataFromRequest.getShoeNumber())
+                .category(shoeDataFromRequest.getCategory())
                 .price(shoeDataFromRequest.getPrice())
-                .size(shoeDataFromRequest.getSize())
+                .size(List.<String>of(shoeDataFromRequest.getSize()))
                 .url(shoeDataFromRequest.getUrl())
-                .quantitiy(1)
+                .onSale(shoeDataFromRequest.isOnSale())
                 .build();
         return shoeRepository.save(newShoe);
     }
 
-    public void increaseQuantity(Long id){
+    public List<String> addShoeSize(String brand, String shoeNumber, String size) {
+        Shoe shoe = shoeRepository.getShoeByShoeNumberAndBrand(shoeNumber, brand);
+        if (!shoe.getSize().contains(size)) {
+            shoe.getSize().add(size);
+        }
+        shoeRepository.save(shoe);
+        return shoe.getSize();
+    }
+
+    public List<String> deleteShoeSize(String brand, String shoeNumber, String size) {
+        Shoe shoe = shoeRepository.getShoeByShoeNumberAndBrand(shoeNumber, brand);
+        shoe.getSize().remove(size);
+        shoeRepository.save(shoe);
+        return shoe.getSize();
+    }
+
+    @Transactional
+    public void deleteShoe(String brand, String shoeNumber) {
+        shoeRepository.deleteByBrandAndShoeNumber(brand, shoeNumber);
+    }
+
+    void addShoeSizeById(Long id, String size) {
         Shoe shoe = shoeRepository.getOne(id);
-        shoe.setQuantitiy(shoe.getQuantitiy()+1);
+        shoe.getSize().add(size);
         shoeRepository.save(shoe);
     }
 
-    public void decreaseQuantity(Long id){
-        Shoe shoe = shoeRepository.getOne(id);
-        shoe.setQuantitiy(shoe.getQuantitiy()-1);
-        shoeRepository.save(shoe);
+    public List<Shoe> getShoesByBrandAndCategory(String brand, String category) {
+        return shoeRepository.getShoesByBrandAndCategory(brand, category);
     }
 
+    public List<String> getBrandsByCategory(String category) {
+        return shoeRepository.getBrandsByCategory(category);
+    }
+
+    public List<Shoe> getShoesOnSale() {
+        return shoeRepository.getShoesByOnSaleIsTrue();
+    }
 }

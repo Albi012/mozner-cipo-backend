@@ -9,26 +9,18 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.util.*;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-public class Shoe {
-
+public class OtherItem {
     @Id
     @GeneratedValue
     Long id;
-    String brand;
-    String category;
-    String shoeNumber;
+    String name;
     String price;
-    boolean onSale;
-    @ElementCollection
-    List<String> size;
     String url;
-
-
 }
