@@ -18,23 +18,4 @@ public class MoznerCipoApplication {
         SpringApplication.run(MoznerCipoApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner init() {
-        return args -> {
-            Shoe shoe1 = Shoe.builder()
-                    .brand("Armani")
-                    .shoeNumber("12-123-532")
-                    .category("men")
-                    .onSale(true)
-                    .build();
-            shoeRepository.save(shoe1);
-            Shoe shoe2 = Shoe.builder()
-                    .brand("aaArmani")
-                    .shoeNumber("12-123-532")
-                    .category("men")
-                    .onSale(false)
-                    .build();
-            shoeRepository.save(shoe2);
-        };
-    }
 }
