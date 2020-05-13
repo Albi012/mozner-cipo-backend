@@ -91,4 +91,8 @@ public class ShoeDataManager {
     public List<Shoe> getShoesOnSale() {
         return shoeRepository.getShoesByOnSaleIsTrue();
     }
+
+    public void deleteShoeById(String id) {
+        shoeRepository.deleteById(Long.valueOf(id));
+    }
 }

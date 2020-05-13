@@ -58,4 +58,9 @@ public class ShoeRouteController {
          return shoeDataManager.deleteShoeSize(brand,shoeNumber,size);
     };
 
+    @GetMapping("/shoe/delete/{id}")
+    public void deleteShoeById(@PathVariable("id")String id){
+        shoeDataManager.deleteShoeById(id);
+    }
+
 }
