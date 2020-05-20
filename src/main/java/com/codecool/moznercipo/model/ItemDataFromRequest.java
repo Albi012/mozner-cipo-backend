@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ItemDataFromRequest {
     String name;
+    String desc;
     String price;
     String url;
 }
