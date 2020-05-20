@@ -21,7 +21,7 @@ public class OtherItem {
     @GeneratedValue
     Long id;
     String name;
-    String desc;
+    String description;
     String price;
     String url;
 }

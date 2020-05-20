@@ -22,7 +22,7 @@ public class OtherItemDataManager {
     public OtherItem saveNewOtherItem(ItemDataFromRequest itemDataFromRequest) {
         OtherItem item = OtherItem.builder()
                 .name(itemDataFromRequest.getName())
-                .desc(itemDataFromRequest.getDesc())
+                .description(itemDataFromRequest.getDescription())
                 .price(itemDataFromRequest.getPrice())
                 .url(itemDataFromRequest.getUrl())
                 .build();
