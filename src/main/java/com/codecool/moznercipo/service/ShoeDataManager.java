@@ -81,7 +81,7 @@ public class ShoeDataManager {
     }
 
     public List<Shoe> getShoesByBrandAndCategory(String brand, String category) {
-        return shoeRepository.getShoesByBrandAndCategory(brand, category);
+        return shoeRepository.getShoesByBrandAndCategoryOrderByIdDesc(brand, category);
     }
 
     public List<String> getBrandsByCategory(String category) {

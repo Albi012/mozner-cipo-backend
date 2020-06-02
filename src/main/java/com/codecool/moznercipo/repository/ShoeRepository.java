@@ -21,7 +21,7 @@ public interface ShoeRepository extends JpaRepository<Shoe,Long> {
 
     List<Shoe> getShoesByOnSaleIsTrue();
 
-    List<Shoe> getShoesByBrandAndCategory(String brand,String category);
+    List<Shoe> getShoesByBrandAndCategoryOrderByIdDesc(String brand,String category);
 
     @Query("select distinct s.brand from Shoe s where s.category =:category ")
     List<String> getBrandsByCategory(@Param("category") String category);
